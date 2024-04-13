@@ -18,30 +18,49 @@ export class CustomerController {
     }
   }
 
-  async getCustomer(req: Request, res: Response) {
-    const customersService = new CustomerService();
-    const customer = await customersService.getCustomer(req.params.id);
-    if (!customer) throw new NotFoundError();
-    return res.json({ customer });
+  async getCustomer(req: Request, res: Response, next: NextFunction) {
+    try {
+      const customersService = new CustomerService();
+      const customer = await customersService.getCustomer(req.params.id);
+      if (!customer) throw new NotFoundError();
+      return res.json({ customer });
+    } catch (error) {
+      next(error);
+    }
   }
 
-  async createCustomer(req: Request, res: Response) {
-    const body = CreateCustomerSchema.parse(req.body);
-    const customersService = new CustomerService();
-    const customer = await customersService.createCustomer(body);
-    return res.json({ customer });
+  async createCustomer(req: Request, res: Response, next: NextFunction) {
+    try {
+      const body = CreateCustomerSchema.parse(req.body);
+      const customersService = new CustomerService();
+      const customer = await customersService.createCustomer(body);
+      return res.json({ customer });
+    } catch (error) {
+      next(error);
+    }
   }
 
-  async updateCustomer(req: Request, res: Response) {
-    const body = UpdateCustomerSchema.parse(req.body);
-    const customersService = new CustomerService();
-    const customer = await customersService.updateCustomer(req.params.id, body);
-    return res.json({ customer });
+  async updateCustomer(req: Request, res: Response, next: NextFunction) {
+    try {
+      const body = UpdateCustomerSchema.parse(req.body);
+      const customersService = new CustomerService();
+      const customer = await customersService.updateCustomer(
+        req.params.id,
+        body
+      );
+      return res.json({ customer });
+    } catch (error) {
+      next(error);
+    }
   }
 
-  async deleteCustomer(req: Request, res: Response) {
-    const customersService = new CustomerService();
-    await customersService.deleteCustomer(req.params.id);
-    return res.status(204).end();
+  async deleteCustomer(req: Request, res: Response, next: NextFunction) {
+    try {
+      const customersService = new CustomerService();
+      await customersService.deleteCustomer(req.params.id);
+      return res.status(204).end();
+    } catch (error) {
+      next(error);
+    }
   }
 }
