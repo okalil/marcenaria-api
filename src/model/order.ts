@@ -8,7 +8,7 @@ interface IOrderItem {
   };
 }
 
-interface IOrder{
+interface IOrder {
   date: Date;
   status: string;
   items: IOrderItem[];
@@ -16,20 +16,23 @@ interface IOrder{
   total: number;
 }
 
-const OrderSchema = new Schema({
-  date: { type: Date, required: true },
-  status: { type: String, required: true },
-  items: [
-    {
-      quantity: { type: Number, required: true },
-      product: {
-        name: { type: String, required: true },
-        value: { type: Number, required: true },
+const OrderSchema = new Schema(
+  {
+    date: { type: Date, default: Date.now },
+    status: { type: String },
+    items: [
+      {
+        quantity: { type: Number },
+        product: {
+          name: { type: String },
+          value: { type: Number },
+        },
       },
-    },
-  ],
-  customer: { type: Schema.Types.ObjectId, ref: 'Customer', required: true },
-});
+    ],
+    customer: { type: Schema.Types.ObjectId, ref: 'Customer' },
+  },
+  { toJSON: { virtuals: true }, toObject: { virtuals: true } }
+);
 
 OrderSchema.virtual('total').get(function (this: IOrder) {
   return this.items.reduce(

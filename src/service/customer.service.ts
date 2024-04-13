@@ -1,7 +1,10 @@
 import { Customer } from '../model/customer';
+import { CustomerFilterDto } from '../model/dto/customer-filter';
+import { CreateCustomerDto } from '../model/dto/create-customer';
+import { UpdateCustomerDto } from '../model/dto/update-customer';
 
 export class CustomerService {
-  async getCustomers({ cpf, city, neighborhood }) {
+  async getCustomers({ cpf, city, neighborhood }: CustomerFilterDto) {
     const customers = await Customer.find({
       ...(cpf && { cpf }),
       ...(city && { city }),
@@ -13,11 +16,11 @@ export class CustomerService {
     const customer = await Customer.findById(id);
     return customer;
   }
-  async createCustomer(dto: any) {
+  async createCustomer(dto: CreateCustomerDto) {
     const customer = await Customer.create(dto);
     return customer;
   }
-  async updateCustomer(id: string, dto: any) {
+  async updateCustomer(id: string, dto: UpdateCustomerDto) {
     const customer = await Customer.updateOne({ _id: id }, { $set: dto });
     return customer;
   }

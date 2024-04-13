@@ -1,7 +1,10 @@
 import { Order } from '../model/order';
+import { OrderFilterDto } from '../model/dto/order-filter';
+import { CreateOrderDto } from '../model/dto/create-order';
+import { UpdateOrderDto } from '../model/dto/update-order';
 
 export class OrderService {
-  async getOrders({ customer, status, from, to }) {
+  async getOrders({ customer, status, from, to }: OrderFilterDto) {
     const orders = await Order.find({
       ...(customer && { customer }),
       ...(status && { status }),
@@ -13,11 +16,11 @@ export class OrderService {
     const order = await Order.findById(orderId);
     return order;
   }
-  async createOrder(dto: any) {
+  async createOrder(dto: CreateOrderDto) {
     const customer = await Order.create(dto);
     return customer;
   }
-  async updateOrder(id: string, dto: any) {
+  async updateOrder(id: string, dto: UpdateOrderDto) {
     const customer = await Order.updateOne({ _id: id }, { $set: dto });
     return customer;
   }
