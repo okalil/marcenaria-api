@@ -1,15 +1,17 @@
 import 'dotenv/config';
-import express, { Request, Response } from 'express';
+import express from 'express';
 import mongoose from 'mongoose';
-import { ZodError } from 'zod';
+import cors from 'cors';
 
 import { router } from './routes';
 import { handleError } from './middleware/error.middleware';
 
 async function main() {
-  await mongoose.connect('mongodb://127.0.0.1:27017/marcenaria');
+  await mongoose.connect(process.env.MONGODB_URL!);
 
   const app = express();
+  app.use(cors({ origin: '*' }));
+  app.use(express.json());
   app.use(router);
   app.use(handleError);
 
