@@ -7,5 +7,5 @@ export const CreateProductSchema = z.object({
   value: z.number().min(0),
   material: z.string().nullish(),
   unit: z.string().nullish(),
-  thickness: z.string().nullish(),
+  thickness: z.number().nullish(),
 });
