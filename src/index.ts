@@ -10,7 +10,7 @@ async function main() {
   await mongoose.connect(process.env.MONGODB_URL!);
 
   const app = express();
-  app.use(cors({ origin: '*' }));
+  app.use(cors({ origin: process.env.CLIENT_URL }));
   app.use(express.json());
   app.use(router);
   app.use(handleError);
